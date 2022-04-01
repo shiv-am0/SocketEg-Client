@@ -3,6 +3,7 @@ package com.sriv.shivam.socketegclient;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private String message;
     EditText messageEditText;
     Button sendButton;
-    final String SERVER_IP = "14.139.212.227";
+    final String SERVER_IP = "10.2.249.143";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 message = messageEditText.getText().toString();
+                Log.i("test", "On click");
 
                 // start the Thread to connect to server
                 new Thread(new ClientThread(message)).start();
@@ -47,13 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
         ClientThread(String message) {
             this.message = message;
+            Log.i("test", "Message: " + this.message);
         }
         @Override
         public void run() {
             try {
+                Log.i("test", "Try block");
                 // the IP and port should be correct to have a connection established
                 // Creates a stream socket and connects it to the specified port number on the named host.
-                client = new Socket(SERVER_IP, 4444);  // connect to server
+                client = new Socket(SERVER_IP, 47430);  // connect to server
                 printwriter = new PrintWriter(client.getOutputStream(),true);
                 printwriter.write(message);  // write the message to output stream
 
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 client.close();
 
             } catch (IOException e) {
+                Log.i("test", "Catch block: " + e.toString());
                 e.printStackTrace();
             }
 
